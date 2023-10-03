@@ -39,6 +39,7 @@ Trie trie() {
 }
 
 const char *trie_insert(Trie trie,const char *string,void * end_of_str_ctx) {
+    const char * temp = string;
     struct trie_node ** iterator = &trie->next[(*string) - TRIE_BASE_CHAR];
     while(1) {
         if(*iterator == NULL) {
@@ -53,7 +54,7 @@ const char *trie_insert(Trie trie,const char *string,void * end_of_str_ctx) {
             break;
     }
     (*iterator)->end_of_str_ctx = end_of_str_ctx;
-    return string;
+    return temp;
 }
 void trie_delete(Trie trie,const char *string) {
     struct trie_node * find_node;
