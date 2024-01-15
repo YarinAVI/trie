@@ -24,8 +24,11 @@ struct trie {
 
 static struct trie_node *internal_trie_exists(struct trie_node * node_i,const char * string) {
     while(node_i) {
-        if(*string == '\0' && node_i->end_of_str_ctx != NULL) {
-            return node_i;
+        if(*string == '\0') {
+            if(node_i->end_of_str_ctx != NULL) {
+                return node_i;
+            }
+            return NULL;
         }
         node_i = node_i->next[(*string) - TRIE_BASE_CHAR];
         string++;
