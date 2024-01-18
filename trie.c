@@ -22,6 +22,10 @@ struct trie {
 };
 
 
+Trie trie() {
+    return calloc(1,sizeof(struct trie));
+}
+
 static struct trie_node *internal_trie_exists(struct trie_node * node_i,const char * string) {
     while(node_i) {
         if(*string == '\0') {
@@ -36,10 +40,6 @@ static struct trie_node *internal_trie_exists(struct trie_node * node_i,const ch
     return NULL;
 }
 
-
-Trie trie() {
-    return calloc(1,sizeof(struct trie));
-}
 
 const char *trie_insert(Trie trie,const char *string,void * end_of_str_ctx) {
     const char * temp = string;
@@ -96,5 +96,25 @@ void trie_destroy(Trie * trie) {
         }
         free(*trie);
         (*trie) = NULL;
+    }
+}
+
+static void trie_iterate_internal(struct  trie_node *node,void (*do_function)(void * word_ctx,void * do_ctx),void * do_ctx)  {
+    int i;
+    if(node->end_of_str_ctx != NULL) {
+        do_function(node->end_of_str_ctx,do_ctx);
+    }
+    for(i=0;i<95;i++) {
+        if(node->next[i]) {
+            trie_iterate_internal(node->next[i],do_function,do_ctx);
+        }
+    }
+}
+void trie_iterate(Trie trie, void (*do_function)(void * word_ctx,void * do_ctx),void * do_ctx) {
+    int i;
+    for(i=0;i<95;i++) {
+        if(trie->next[i]) {
+            trie_iterate_internal(trie->next[i],do_function,do_ctx);
+        }
     }
 }

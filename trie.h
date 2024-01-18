@@ -55,8 +55,14 @@ void trie_delete(Trie trie,const char  *string);
 void trie_destroy(Trie * trie);
 
 
-
-
+/**
+ * @brief function for iterating the trie tree.
+ * 
+ * @param trie the trie
+ * @param do_function a function that does something to the word in the tree, this is completely generic ( for example can be used for printing)
+ * @param do_ctx the context for the do function ( sometimes we want to add contex to the operation )
+ */
+void trie_iterate(Trie trie, void (*do_function)(void * word_ctx,void * do_ctx),void * do_ctx);
 
 
 
